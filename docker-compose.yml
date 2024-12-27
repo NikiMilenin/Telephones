@@ -1,0 +1,22 @@
+services:
+  app-db:
+    image: postgres:13.16
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: Telephones_DB
+    expose:
+      - "5432"
+    volumes:
+      - telephonesData:/usr/src/Telephones/static
+      - ./db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app-web:
+    build: .
+    ports:
+      - "8081:8080"
+    links:
+      - app-db
+
+volumes:
+  telephonesData:
